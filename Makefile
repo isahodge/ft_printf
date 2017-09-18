@@ -6,7 +6,7 @@
 #    By: ihodge <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/30 16:46:26 by ihodge            #+#    #+#              #
-#    Updated: 2017/09/18 12:49:32 by ihodge           ###   ########.fr        #
+#    Updated: 2017/09/18 13:03:18 by ihodge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,18 +31,15 @@ SRC  = ft_isdigit.c \
 		create_lists.c \
 		dispatcher.c \
 
-.PHONY: all clean fclean re
-
-all: force $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJ)
 	gcc $(FLAGS) $(OBJ)
 	ar rc $(NAME) $(OBJ) libftprintf.h
+
 %.o: %.c
 	gcc $(FLAGS) -c $^ -o $@
 
-force:
-	@true
 clean:
 	rm -f $(OBJ)
 
