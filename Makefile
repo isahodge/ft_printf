@@ -6,7 +6,7 @@
 #    By: ihodge <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/30 16:46:26 by ihodge            #+#    #+#              #
-#    Updated: 2017/09/17 17:06:21 by ihodge           ###   ########.fr        #
+#    Updated: 2017/09/18 12:49:32 by ihodge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,9 +44,9 @@ $(NAME): $(OBJ)
 force:
 	@true
 clean:
-	saferm -f $(OBJ)
+	rm -f $(OBJ)
 
 fclean:
-	saferm -f $(OBJ) $(NAME)
+	rm -f $(OBJ) $(NAME)
 
 re: fclean all
