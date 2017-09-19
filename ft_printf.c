@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/04 12:06:54 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/17 20:29:13 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/19 16:19:28 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	save_str(char *start_str, char **string)
 	int			len;
 
 	len = 0;
+	if (*start_str == '%')
+		len++;
 	while (start_str[len] != '%' && start_str[len] != '\0')
 		len++;
 	start_str = ft_strsub(start_str, 0, len);
@@ -28,7 +30,7 @@ void	save_str(char *start_str, char **string)
 
 int		is_flag(char c)
 {
-	if (c == '+' || c == '-' || c == '#' || c == '%' || c == ' ' || c == '.' ||
+	if (c == '+' || c == '-' || c == '#' || c == ' ' || c == '.' ||
 			c == 'm')
 		return (1);
 	if (c >= '0' && c <= '9')
@@ -104,11 +106,11 @@ int		ft_printf(const char *str, ...)
 			while (is_flag(*str))
 				str++;
 			if (is_conv(*str) == 1)
+			{
 				save_str(dispatcher(format, va_arg(ap, int)), &string);
-			else
-				break ;
-			str++;
-				save_str((char*)str, &string);
+				str++;
+			}
+			save_str((char*)str, &string);
 			format = format->next;
 		}
 		str++;
