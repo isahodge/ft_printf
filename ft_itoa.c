@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 18:05:37 by ihodge            #+#    #+#             */
-/*   Updated: 2017/08/04 11:57:24 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/21 13:11:56 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	ft_reverse(char *s)
 static int	ft_intlen(int n, int int_len)
 {
 	if (n == -2147483648)
-		return (11);
+		return (10);
 	if (n < 0)
 	{
 		n *= -1;
@@ -59,7 +59,7 @@ char		*ft_itoa(int n)
 	if (fresh == NULL)
 		return (NULL);
 	if (n == -2147483648)
-		return (ft_strcpy(fresh, "-2147483648"));
+		return (ft_strcpy(fresh, "2147483648"));
 	fresh[int_len - 1] = n < 0 ? '-' : '0';
 	if (n < 0)
 		n = -n;
