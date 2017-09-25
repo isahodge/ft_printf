@@ -6,7 +6,7 @@
 #    By: ihodge <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/30 16:46:26 by ihodge            #+#    #+#              #
-#    Updated: 2017/09/25 11:39:21 by ihodge           ###   ########.fr        #
+#    Updated: 2017/09/25 11:54:36 by ihodge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = libftprintf.a
@@ -41,9 +41,9 @@ $(NAME): $(OBJ)
 	gcc $(FLAGS) -c $^ -o $@
 
 clean:
-	saferm -f $(OBJ)
+	rm -f $(OBJ)
 
 fclean:
-	saferm -f $(OBJ) $(NAME)
+	rm -f $(OBJ) $(NAME)
 
 re: fclean all
