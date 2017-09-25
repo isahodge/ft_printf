@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/04 12:06:54 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/19 16:19:28 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/24 21:39:18 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,18 @@ void	save_str(char *start_str, char **string)
 	int			len;
 
 	len = 0;
-	if (*start_str == '%')
-		len++;
-	while (start_str[len] != '%' && start_str[len] != '\0')
-		len++;
-	start_str = ft_strsub(start_str, 0, len);
-	if ((*string) == NULL)
-		(*string) = start_str;
-	else
-		(*string) = ft_strjoin((*string), start_str);
+	if (start_str)
+	{
+		if (*start_str == '%')
+			len++;
+		while (start_str[len] != '%' && start_str[len] != '\0')
+			len++;
+		start_str = ft_strsub(start_str, 0, len);
+		if ((*string) == NULL)
+			(*string) = start_str;
+		else
+			(*string) = ft_strjoin((*string), start_str);
+	}
 }
 
 int		is_flag(char c)
@@ -41,8 +44,29 @@ int		is_flag(char c)
 int		is_conv(char c)
 {
 	if (c == 'd' || c == 'i' || c == 'x' || c == 'X' || c == 'o' || c == 'O' ||
-			c == 'u' || c== 'U' || c == 'D' || c == 'p')
+			c == 'u' || c == 'U' || c == 'D' || c == 'p')
 		return (1);
+	return (0);
+}
+
+int		is_length(char *str, t_format *format)
+{
+	if ((*str == 'h' && *(str + 1) == 'h') && is_conv(*(str + 2)))
+	{
+		format->length = 'H';
+		return (2);
+	}
+	else if ((*str == 'l' && *(str + 1) == 'l') && is_conv(*(str + 2)))
+	{
+		format->length = 'X';
+		return (2);
+	}
+	else if ((*str == 'l' || *str == 'h' || *str == 'j' || *str == 'z')
+			&& is_conv(*(str + 1)))
+	{
+		format->length = *str;
+		return (1);
+	}
 	return (0);
 }
 
@@ -81,9 +105,6 @@ void	save_flag(t_format *format, char *str)
 		flags->next = create_flag();
 		flags = flags->next;
 	}
-	flags->next = NULL;
-	if (is_conv(*str) == 1)
-		format->conv = *str;
 }
 
 int		ft_printf(const char *str, ...)
@@ -103,13 +124,17 @@ int		ft_printf(const char *str, ...)
 			str++;
 			format = create_format();
 			save_flag(format, (char*)str);
-			while (is_flag(*str))
+			while (is_flag(*str))//need to error handle. each flag only once
 				str++;
+			str = str + is_length((char*)str, format);
 			if (is_conv(*str) == 1)
 			{
-				save_str(dispatcher(format, va_arg(ap, int)), &string);
+				format->conv = *str;
+				save_str(dispatcher(format, va_arg(ap, long long)), &string);
 				str++;
 			}
+			else if (*str != '%')
+				return (0);
 			save_str((char*)str, &string);
 			format = format->next;
 		}
@@ -119,64 +144,3 @@ int		ft_printf(const char *str, ...)
 	ft_putstr(string);
 	return (ft_strlen(string));
 }
-
-			//printf("format->conv = %c\n", format->conv);
-			//printf("format->flag->flag = %c\n", format->flag->flag);
-			//printf("format->flag->next->flag = %c\n", format->flag->next->flag);
-			//if (format->flag->num != 0)
-			//	printf("format->flag->int = %i\n", format->flag->num);
-
-//dDioOxXuU all can be promoted to long
-
-/*char	*save_str(char *start_str)
-{
-	static char *string;
-	char		*tmp;
-	int			len;
-
-	len = 0;
-	while (start_str[len] != '%' && start_str[len] != '\0')
-		len++;
-	if (string == NULL)
-		string = ft_strnew(1);
-	start_str = ft_strsub(start_str, 0, len);
-	tmp = ft_strjoin(string, start_str);
-	string = tmp;
-	return (string);
-}*/
-/*int		ft_printf(const char *str, ...)
-{
-	va_list		 ap;
-	char		*string;
-	t_format	*format;
-	int			string_len;
-
-	format = NULL;
-	printf("1\n");
-	string = save_str((char*)str);
-	va_start(ap, str);
-	while (*str)
-	{
-		if (*str == '%')
-		{
-			str++;
-			format = create_format();
-			save_flag(format, (char*)str);
-			while (is_flag(*str))
-				str++;
-			if (is_conv(*str) == 1)
-				string = save_str(dispatcher(format, va_arg(ap, int)));
-			else
-				break ;
-			str++;
-				string = save_str((char*)str);
-			format = format->next;
-		}
-		str++;
-	}
-	va_end(ap);
-	ft_putstr(string);
-	string_len = ft_strlen(string);
-	ft_strdel(&string);
-	return (string_len);
-}*/

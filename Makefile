@@ -6,12 +6,11 @@
 #    By: ihodge <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/30 16:46:26 by ihodge            #+#    #+#              #
-#    Updated: 2017/09/18 13:03:18 by ihodge           ###   ########.fr        #
+#    Updated: 2017/09/24 21:21:20 by ihodge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 NAME = libftprintf.a
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 OBJ = ${SRC:.c=.o}
 SRC  = ft_isdigit.c \
 		ft_itoa.c \
@@ -27,23 +26,24 @@ SRC  = ft_isdigit.c \
 		ft_memalloc.c \
 		ft_bzero.c \
 		ft_strdel.c \
-		main.c \
+		ft_lltoa.c \
 		create_lists.c \
 		dispatcher.c \
+		main.c
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	gcc $(FLAGS) $(OBJ)
-	ar rc $(NAME) $(OBJ) libftprintf.h
+	ar rc $(NAME) $(OBJ)
 
 %.o: %.c
 	gcc $(FLAGS) -c $^ -o $@
 
 clean:
-	rm -f $(OBJ)
+	saferm -f $(OBJ)
 
 fclean:
-	rm -f $(OBJ) $(NAME)
+	saferm -f $(OBJ) $(NAME)
 
 re: fclean all

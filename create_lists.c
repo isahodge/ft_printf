@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/13 17:51:16 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/13 19:06:37 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/22 19:16:08 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_format	*create_format(void)
 		return (NULL);
 	new->result = NULL;
 	new->conv = 0;
+	new->length = 0;
 	new->flag = create_flag();
 	new->next = NULL;
 	return (new);

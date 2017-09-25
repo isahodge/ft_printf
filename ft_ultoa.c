@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_ultoa.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 18:05:37 by ihodge            #+#    #+#             */
-/*   Updated: 2017/08/04 11:57:24 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/18 18:54:45 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,8 @@ static void	ft_reverse(char *s)
 	}
 }
 
-static int	ft_intlen(int n, int int_len)
+static int	ft_intlen(unsigned long n, int int_len)
 {
-	if (n == -2147483648)
-		return (11);
-	if (n < 0)
-	{
-		n *= -1;
-		int_len++;
-	}
 	while (n >= 10)
 	{
 		n = n / 10;
@@ -47,7 +40,7 @@ static int	ft_intlen(int n, int int_len)
 	return (int_len);
 }
 
-char		*ft_itoa(int n)
+char		*ft_ultoa(unsigned long n)
 {
 	char	*fresh;
 	int		int_len;
@@ -58,11 +51,6 @@ char		*ft_itoa(int n)
 	fresh = ft_strnew(int_len);
 	if (fresh == NULL)
 		return (NULL);
-	if (n == -2147483648)
-		return (ft_strcpy(fresh, "-2147483648"));
-	fresh[int_len - 1] = n < 0 ? '-' : '0';
-	if (n < 0)
-		n = -n;
 	while (i < int_len && n > 0)
 	{
 		fresh[i] = n % 10 + '0';

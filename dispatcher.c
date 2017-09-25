@@ -6,21 +6,20 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 17:16:43 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/17 16:55:54 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/23 17:51:02 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-char	*dispatcher(t_format *format, int data)
+char	*dispatcher(t_format *format, long long data)
 {
 	char	*result;
 	t_flag	*flags;
 
-	conv_funct_ptr();
 	flags = format->flag;
 	result = NULL;
-	result = (*fptr[(int)format->conv]) (data > 0 ? data : data * -1);
+	result = call_fptr_with_length(format->conv, format->length, &data);
 	result = int_precision(result, format->flag);
 	result = negative_int(result, data);
 	while (flags)
@@ -36,11 +35,33 @@ char	*dispatcher(t_format *format, int data)
 	return (result);
 }
 
+char	*call_fptr_with_length(char c, char l, long long *data)
+{
+	//printf("int c = %c\n", c);
+	//printf("int l = %c\n", l);
+	conv_funct_ptr();
+	if (l == 'H')
+		*data = (char)*data;
+	else if (l == 'h')
+		*data = (short)*data;
+	else if (l == 'l')
+		*data = (long)*data;
+	else if (l == 'X')
+		return ((*fptr[(int)c]) (*data > 0 ? *data : *data * -1));
+	else if (l == 'j')
+		*data = (intmax_t)*data;
+	else if (l == 'z')
+		*data = (size_t)*data;
+	else
+		*data = (int)*data;
+	return ((*fptr[(int)c]) (*data > 0 ? *data : *data * -1));
+}
+
 void	conv_funct_ptr(void)
 {
 	ft_bzero(fptr, 127);
-	fptr['i'] = ft_itoa;
-	fptr['d'] = ft_itoa;
+	fptr['i'] = ft_lltoa;
+	fptr['d'] = ft_lltoa;
 }
 
 char	*int_precision(char *str, t_flag *flags)
@@ -74,12 +95,8 @@ char	*int_precision(char *str, t_flag *flags)
 }
 
 //do min_field_wid is considered last
-//plus sign flag adds sign to both pos and neg nums. signed numbers will always be printed with leading sign
-// the ' ' flag precedes positive numbers with a space and negative numbers with -
 // '+' flag overides ' '
 //the '0' flag is ignored when '-' flag is present
-//the '-' = left feild adjust
-//do plus flag. check for space flag, only execute if plus flag not present.
 //do alternate flag '#'
 //'#' flag with '+' or ' ' flag results in undefined behavior
 // 'x' conv and 'o' conv are treated as unsigned int and converted
@@ -87,8 +104,8 @@ char	*int_precision(char *str, t_flag *flags)
 // if the precision is lower than the len of int, it is ignored
 // precision is done before sign and space flag?, includes negatives
 // precision for chars/string is different
-
-char 	*negative_int(char *str, int data)
+//make sure to account for l , ll, h, hh,  j and z. error out if not right before conv
+char 	*negative_int(char *str, long long data)
 {
 	int		len;
 	char	*result;
@@ -113,7 +130,7 @@ char 	*negative_int(char *str, int data)
 	return (result);
 }
 
-char	*plus_flag(char *str, int data)
+char	*plus_flag(char *str, long long data)
 {
 	int		len;
 	char	*result;
@@ -138,7 +155,7 @@ char	*plus_flag(char *str, int data)
 	return (result);
 }
 
-char	*space_flag(char *str, int data)
+char	*space_flag(char *str, long long data)
 {
 	int		len;
 	char	*result;
@@ -199,7 +216,8 @@ void	fill_before(char *str, char **result, int fill, char character)
 	int i;
 
 	i = 0;
-	while ((*str < '0' || *str > '9') && character == '0')
+	//account for 0x prefix?
+	while ((*str < '0' || *str > '9') && character == '0')//won't for hex
 	{
 		(*result)[i] = *str;
 		i++;
