@@ -6,7 +6,7 @@
 #    By: ihodge <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/30 16:46:26 by ihodge            #+#    #+#              #
-#    Updated: 2017/09/24 21:21:20 by ihodge           ###   ########.fr        #
+#    Updated: 2017/09/25 11:32:18 by ihodge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = libftprintf.a
@@ -29,7 +29,6 @@ SRC  = ft_isdigit.c \
 		ft_lltoa.c \
 		create_lists.c \
 		dispatcher.c \
-		main.c
 
 all: $(NAME)
 
