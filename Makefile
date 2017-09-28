@@ -6,9 +6,10 @@
 #    By: ihodge <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/30 16:46:26 by ihodge            #+#    #+#              #
-#    Updated: 2017/09/27 18:47:09 by ihodge           ###   ########.fr        #
+#    Updated: 2017/09/27 18:48:01 by ihodge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 NAME = libftprintf.a
 FLAGS = -Wall -Wextra -Werror -g
 OBJ = ${SRC:.c=.o}
