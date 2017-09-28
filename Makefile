@@ -6,7 +6,7 @@
 #    By: ihodge <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/30 16:46:26 by ihodge            #+#    #+#              #
-#    Updated: 2017/09/27 18:15:37 by ihodge           ###   ########.fr        #
+#    Updated: 2017/09/27 18:26:24 by ihodge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = libftprintf.a
@@ -33,7 +33,7 @@ SRC  = ft_isdigit.c \
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	#@gcc $(FLAGS) $(OBJ)
+	@#gcc $(FLAGS) $(OBJ)
 	ar rc $(NAME) $(OBJ)
 
 %.o: %.c
