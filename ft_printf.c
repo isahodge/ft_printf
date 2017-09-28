@@ -6,30 +6,11 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/04 12:06:54 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/25 11:28:35 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/26 19:51:24 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
-
-void	save_str(char *start_str, char **string)
-{
-	int			len;
-
-	len = 0;
-	if (start_str)
-	{
-		if (*start_str == '%')
-			len++;
-		while (start_str[len] != '%' && start_str[len] != '\0')
-			len++;
-		start_str = ft_strsub(start_str, 0, len);
-		if ((*string) == NULL)
-			(*string) = start_str;
-		else
-			(*string) = ft_strjoin((*string), start_str);
-	}
-}
 
 int		is_flag(char c)
 {
@@ -72,49 +53,48 @@ int		is_length(char *str, t_format *format)
 
 void	save_flag(t_format *format, char *str)
 {
-	t_flag *flags;
 	int		num;
 
-	flags = format->flag;
 	while (*str != '\0' && is_flag(*str) >= 1)
 	{
 		if (*str == '.')
-		{
-			flags->flag = '.';
-			str++;
-		}
+			format->precision = 1;
 		if (is_flag(*str) == 2)
 		{
 			num = 0;
-			if (*str == '0')
-				flags->flag = '0';
+			if (*str == '0' && !format->precision)
+				format->zero = 1;
 			while (is_flag(*str) == 2)
 			{
-				if (!flags->flag)
-					flags->flag = 'm';
 				num = num * 10 + *str - '0';
-				flags->num = num;
 				str++;
 			}
+			str--;
+			if (format->precision)
+				format->precision = num;
+			else
+				format->mfw = num;
 		}
-		else 
-		{
-			flags->flag = *str;
-			str++;
-		}
-		flags->next = create_flag();
-		flags = flags->next;
+		else if (*str == ' ')
+			format->space = 1;
+		else if (*str == '+')
+			format->plus = 1;
+		else if (*str == '-')
+			format->minus = 1;
+		else if (*str == '#')
+			format->alternate = 1;
+		str++;
 	}
 }
 
 int		ft_printf(const char *str, ...)
 {
 	va_list		 ap;
-	char		*string;
 	t_format	*format;
+	int			length;
 
 	format = NULL;
-	string = NULL;
+	length = 0;
 	va_start(ap, str);
 	while (*str)
 	{
@@ -129,16 +109,21 @@ int		ft_printf(const char *str, ...)
 			if (is_conv(*str) == 1)
 			{
 				format->conv = *str;
-				ft_putstr(dispatcher(format, va_arg(ap, long long)));
+				if (*str == 'i' || *str == 'd')
+					ft_putstr(dispatcher(format, va_arg(ap, long long)));
+				if (*str == 'u' || *str == 'o' || *str == 'x' || *str == 'X')
+					ft_putstr(u_dispatcher(format, va_arg(ap, unsigned long)));
+				length += format->strlength;
 				str++;
 			}
 			else if (*str != '%')
 				return (0);
-			format = format->next;
+			free(format);
 		}
 		ft_putchar(*str);
+		length++;
 		str++;
 	}
 	va_end(ap);
-	return (0);
+	return (length);
 }
