@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/04 12:06:54 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/26 19:51:24 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/27 20:42:52 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,12 @@ int		ft_printf(const char *str, ...)
 				return (0);
 			free(format);
 		}
-		ft_putchar(*str);
-		length++;
-		str++;
+		if (*str)
+		{
+			ft_putchar(*str);
+			length++;
+			str++;
+		}
 	}
 	va_end(ap);
 	return (length);
