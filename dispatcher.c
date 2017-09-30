@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 17:16:43 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/29 11:08:20 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 16:13:32 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ char	*dispatcher(t_format *format, long long data)
 		format->length = 'l';
 	}
 	result = fptr_with_length(format->conv, format->length, &data);
-	if (format->precision)
+	if (data == 0 && format->precision == 0)
+		result = ft_strdup("");//memleak
+	if (format->precision >= 0)
 		result = int_precision(result, format->precision);
 	if (data < 0)
 		result = negative_int(result, data);
@@ -47,8 +49,20 @@ char	*u_dispatcher(t_format *format, unsigned long data)
 		format->alternate = 1;
 		format->length = 'l';
 	}
+	else if (format->conv == 'U')
+	{
+		format->conv = 'u';
+		format->length = 'l';
+	}
+	else if (format->conv == 'O')
+	{
+		format->conv = 'o';
+		format->length = 'l';
+	}
 	result = ufptr_with_length(format, &data);
-	if (format->precision)
+	if (data == 0 && format->precision == 0)
+		result = ft_strdup("");
+	if (format->precision >= 0)
 		result = int_precision(result, format->precision);
 	if (format->alternate && (data > 0 || format->conv == 'p'))
 		result = alt_flag(result, format);
@@ -60,7 +74,11 @@ char	*u_dispatcher(t_format *format, unsigned long data)
 
 char	*fptr_with_length(char c, char l, long long *data)
 {
-	conv_funct_ptr();
+	char	*(*fptr[127]) (long long data);
+
+	ft_bzero(fptr, 127);
+	fptr['i'] = ft_lltoa;
+	fptr['d'] = ft_lltoa;
 	if (l == 'H')
 		*data = (char)*data;
 	else if (l == 'h')
@@ -80,36 +98,16 @@ char	*fptr_with_length(char c, char l, long long *data)
 
 char	*ufptr_with_length(t_format *format, unsigned long *data)
 {
-	union u_data_union du;
+	union	u_data_union du;
+	char	*(*ufptr[127]) (union u_data_union du, t_format *format,
+				unsigned int base);
 
-	conv_funct_ptr();
-	du.ulong = *data;
-	if (format->length == 'H')
-		*data = (unsigned char)*data;
-	else if (format->length == 'h')
-		*data = (unsigned short)*data;
-	else if (format->length == 'l')
-		*data = (unsigned long)*data;
-	else if (format->length == 'X')
-		return ((*ufptr[(int)format->conv])(du, format, 0));
-	else if (format->length == 'j')
-		*data = (uintmax_t)*data;
-	else if (format->length == 'z')
-		*data = (size_t)*data;
-	else
-		*data = (unsigned int)*data;
-	return ((*ufptr[(int)format->conv])(du, format, 0));
-}
-
-void	conv_funct_ptr(void)
-{
-	ft_bzero(fptr, 127);
 	ft_bzero(ufptr, 127);
-	fptr['i'] = ft_lltoa;
-	fptr['d'] = ft_lltoa;
+	du.ulong = *data;
 	ufptr['u'] = ft_ultoa_base;
 	ufptr['o'] = ft_ultoa_base;
 	ufptr['x'] = ft_ultoa_base;
 	ufptr['X'] = ft_ultoa_base;
 	ufptr['p'] = ft_ultoa_base;
+	return ((*ufptr[(int)format->conv])(du, format, 0));
 }

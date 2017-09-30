@@ -2,20 +2,42 @@
 #include <limits.h>
 int		main(void)
 {
-	int d;
+	/*ft_printf("\\n");
+	ft_printf("%%\\n");
+	ft_printf("%d\n", 42);
+	ft_printf("%d%d\n", 42, 41);
+	ft_printf("%d%d%d\n", 42, 43, 44);
+	ft_printf("%ld\n", 2147483647);
+	ft_printf("%lld\n", 9223372036854775807);
+	printf("%x\\n", 505);
+	printf("\n");
+	ft_printf("%x\\n", 505);
+	ft_printf("%X\\n", 505);
+	ft_printf("%p\\n", &ft_printf);*/
+
+	ft_printf("%20.15d\n", 54321);
+	ft_printf("%-10d\n", 3);
+	ft_printf("% d\n", 3);
+	ft_printf("%+d\\n", 3);
+	ft_printf("%010d\\n", 1);
+	ft_printf("%hhd\\n", 0);
+	ft_printf("%jd\\n", 9223372036854775807);
+	ft_printf("%zd\\n", 4294967295);
+	ft_printf("%hhd\\n", 0);
+	ft_printf("%\\n");
+	/*int d;
 	d = -1;
 	char *str = NULL;
 
 	uintmax_t f = -125;
 	unsigned long long g = -125;
-	//NEED TO FREE EVERYTHING. if !(all the next formats) and if previous format, free str
 	//figure out why error on ftprintf.com
-	//if precision is 0 and input/data is 0, nothing gets printed
-	//find another way to represent precision 0. it is different than no precision
-	//start precision at -1? replace !precision with presicion < 0?
-	//test with filechecker
 	
-	/*printf("pf_printf: hello %% % 030d\n", d);
+	ft_printf("%.0x\n", 0);
+	printf("%.0x\n", 0);
+	printf("%.0o\n", 0);
+	ft_printf("%#.0o\n", 0);
+	printf("pf_printf: hello %% % 030d\n", d);
 	ft_printf("ft_printf: hello %% % 030d\n", d);
 	printf("pf_printf: hello %% %+010hhd\n", (char)d);
 	ft_printf("ft_printf: hello %% %+010hhd\n", (char)d);
@@ -138,7 +160,7 @@ int		main(void)
 	printf("pf_printf: %.0u\n", 0);
 	ft_printf("ft_printf: %.0u\n", 0);//fails 
 	printf("pf_printf: %010.0d\n", -10);
-	ft_printf("ft_printf: %010.0d\n", -10);//fails
+	ft_printf("ft_printf: %010.0d\n", -10);
 	printf("pf_printf: %1.0d\n", -10);
 	ft_printf("pf_printf: %1.0d\n", -10);
 	printf("pf_printf: %#.30llX\n", (unsigned long long)d);
@@ -167,16 +189,11 @@ int		main(void)
 	ft_printf("%u", INT_MAX + 1);
 	ft_printf("%%u 0000042 == |%u|\n", 0000042);
 	ft_printf("%%u \t == |%u|\n", '\t');
-	ft_printf("%%u Lydie == |%u|\n", 'L' +  'y' + 'd' + 'i' + 'e');*/
-
-	//chars only have mfw
-	//precision = 0 means nothing is printed but mfw still printed, empty str
-	//%% d not passing mix test
-	//test with filechecker
+	ft_printf("%%u Lydie == |%u|\n", 'L' +  'y' + 'd' + 'i' + 'e');
 
 	//printf("%.20c\n", (char)d);undefined behavior
 	//printf("% c\n", (char)d);undefined behavior
-	/*printf("pf_printf: %10c\n", 'a');//undefined behavior with zero flag
+	printf("pf_printf: %10c\n", 'a');//undefined behavior with zero flag
 	ft_printf("ft_printf: %10c\n", 'a');//undefined behavior with zero flag
 	printf("pf_printf: %-10c\n", '$');
 	ft_printf("ft_printf: %-10c\n", '$');
@@ -188,7 +205,7 @@ int		main(void)
 	printf("pf_printf: %s\n", "hello");
 	ft_printf("ft_printf: %s\n", "hello");
 	printf("pf_printf: %10s\n", "hello");
-	ft_printf("ft_printf: %10s\n", "hello");//malloc error
+	ft_printf("ft_printf: %10s\n", "hello");
 	//printf("% s\n", "hello");//undefined behavior
 	printf("pf_printf: %.3s\n", "hello");
 	ft_printf("ft_printf: %.3s\n", "hello");
@@ -202,7 +219,7 @@ int		main(void)
 	printf("pf_printf: %.10s\n", "hello");
 	ft_printf("ft_printf: %.10s\n", "hello");
 	printf("pf_printf: %10.9s\n", "hello");
-	ft_printf("ft_printf: %10.9s\n", "hello");*/
+	ft_printf("ft_printf: %10.9s\n", "hello");
 	printf("pf_printf: %10.3s\n", str);
 	ft_printf("ft_printf: %10.3s\n", str);
 	printf("pf_printf: %-10.3s\n", str);
@@ -213,7 +230,12 @@ int		main(void)
 	printf("unintmax_t f= %ju sizeof f = %lu\n", f, sizeof(f));
 	ft_printf("unsigned long long g = %llu sizeof f = %lu\n", g, sizeof(g));
 	printf("unsigned long long g = %llu sizeof f = %lu\n", g, sizeof(g));
-	printf("pf_printf: %d%% des gens %c\n", 100, 'a');
-	ft_printf("ft_printf: %d%% ies gens %c\n", 100, 'a');
+	printf("pf_printf: %10d%% des gens %c\n", 100, 'a');
+	ft_printf("ft_printf: %10d%% ies gens %c\n", 100, 'a');
+	ft_printf("%i\n", ft_printf("%c\t%%%c%s\n", 'a', 'b', "hello"));
+	ft_printf("ft_printf: %+020d\n", d * -1);
+	ft_printf("ft_printf: % d\n", d * -1);
+	ft_printf("ft_printf: % 010d\n", d);
+	ft_printf("ft_printf: % 010d\n", d * -1);*/
 	return (0);
 }

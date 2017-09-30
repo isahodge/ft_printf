@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/04 12:06:54 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/29 17:07:55 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 16:13:51 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ void	save_flag(t_format *format, char *str)
 	while (*str != '\0' && is_flag(*str) >= 1)
 	{
 		if (*str == '.')
-			format->precision = 1;
+			format->precision = 0;
 		if (is_flag(*str) == 2)
 		{
 			num = 0;
-			if (*str == '0' && !format->precision)
+			if (*str == '0' && format->precision == -1)
 				format->zero = 1;
 			while (is_flag(*str) == 2)
 			{
@@ -43,7 +43,7 @@ void	save_flag(t_format *format, char *str)
 				str++;
 			}
 			str--;
-			if (format->precision)
+			if (format->precision == 0)
 				format->precision = num;
 			else
 				format->mfw = num;
@@ -55,15 +55,30 @@ void	save_flag(t_format *format, char *str)
 
 void	write_arg(va_list ap, t_format *format, char conv)
 {
+	char *string;
+
+	string = NULL;
 	if (conv == 'i' || conv == 'd' || conv == 'D')
-		ft_putstr(dispatcher(format, va_arg(ap, long long)));
+	{
+		string = dispatcher(format, va_arg(ap, long long));
+		ft_putstr(string);
+		free(string);
+	}
 	if (conv == 'u' || conv == 'o' || conv == 'x' || conv == 'X' ||
-			conv == 'p')
-		ft_putstr(u_dispatcher(format, va_arg(ap, unsigned long)));
+			conv == 'p' || conv == 'U' || conv == 'O')
+	{
+		string = u_dispatcher(format, va_arg(ap, unsigned long));
+		ft_putstr(string);
+		free(string);
+	}
 	if (conv == 'c' || conv == 'C')
-		ft_putchar((unsigned char)va_arg(ap, int));
+		char_conv(format, ((unsigned char)va_arg(ap, int)));
 	if (conv == 's' || conv == 'S')
-		ft_putstr(string_conv(format, va_arg(ap, char *)));
+	{
+		string = string_conv(format, va_arg(ap, char *));
+		ft_putstr(string);
+		free(string);
+	}
 }
 
 int		process_arg(va_list ap, char *str, int *length, t_format *format)
@@ -72,13 +87,17 @@ int		process_arg(va_list ap, char *str, int *length, t_format *format)
 	int len;
 
 	i = 1;
-	if (*(str + 1) == '%')
-	{
-		ft_putchar(str[i]);
-		return (i + 1);
-	}
 	format = create_format();
 	save_flag(format, (char*)str + 1);
+	while (is_flag(str[i]))
+		i++;
+	if (str[i] == '%')
+	{
+		char_conv(format, '%');
+		(*length) += format->strlength;
+		free(format);
+		return (i + 1);
+	}
 	while (is_flag(str[i]))
 		i++;
 	str += i;
@@ -95,7 +114,10 @@ int		process_arg(va_list ap, char *str, int *length, t_format *format)
 		free(format);
 	}
 	else if (*str != '%')
+	{
+		free(format);
 		return (1);
+	}
 	return (i);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/28 11:13:24 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/28 11:47:26 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 11:27:03 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,16 @@ char	*int_precision(char *str, int precision)
 	char	*result;
 
 	len = ft_strlen(str);
-	result = str;
+	result = NULL;
 	fill = precision - len;
 	if (fill > 0)
 	{
 		if (!(result = (char*)ft_memalloc(len + fill + 1)))
 			return (NULL);
 		fill_before(str, &result, fill, '0');
+		free(str);
 	}
-	return (result);
+	return (result ? result : str);
 }
 
 void	fill_after(char *str, char **result, int fill)
@@ -83,7 +84,7 @@ char	*min_field_wid(char *str, t_format *format)
 	char	*result;
 	char	character;
 
-	result = str;
+	result = NULL;
 	len = ft_strlen(str);
 	fill = format->mfw - len;
 	character = ' ';
@@ -95,11 +96,11 @@ char	*min_field_wid(char *str, t_format *format)
 			fill_after(str, &result, fill);
 		else
 		{
-			if (format->zero && !format->precision)
+			if (format->zero && format->precision == -1)
 				character = '0';
 			fill_before(str, &result, fill, character);
 		}
 		free(str);
 	}
-	return (result);
+	return (result ? result : str);
 }

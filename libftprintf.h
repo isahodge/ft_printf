@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 17:39:51 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/29 10:53:12 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 16:24:12 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,7 @@ union				u_data_union
 	uintmax_t		uintmaxt;
 };
 
-char				*(*fptr[127]) (long long data);
-char				*(*ufptr[127]) (union u_data_union du, t_format *format,
-		unsigned int base);
-int					ft_isdigit(int c);
+//int					ft_isdigit(int c);
 int					ft_printf(const char *str, ...);
 void				ft_putchar(char c);
 char				*ft_itoa(int n);
@@ -64,7 +61,6 @@ char				*u_dispatcher(t_format *format, unsigned long data);
 char				*plus_flag(char *str, long long data);
 char				*space_flag(char *str, long long data);
 char				*min_field_wid(char *str, t_format *format);
-void				conv_funct_ptr(void);
 void				fill_after(char *str, char **result, int fill);
 void				fill_before(char *str, char **result, int fill,
 		char character);
@@ -83,4 +79,5 @@ char				*string_conv(t_format *format, char *str);
 char				*str_precision(char *str, int precision);
 char				*mfw_char(char *str, t_format *format);
 void				write_arg(va_list ap, t_format *format, char conv);
+char				*char_conv(t_format *format, unsigned char c);
 #endif

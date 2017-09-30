@@ -6,12 +6,13 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/21 13:00:37 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/23 17:51:51 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 13:57:37 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 #include <stdio.h>
+#include <limits.h>
 
 static void	ft_reverse(char *s)
 {
@@ -33,6 +34,8 @@ static void	ft_reverse(char *s)
 
 static int	ft_intlen(long long n, int int_len)
 {
+	if (n == -9223372036854775807 - 1)
+		return (20);
 	if (n < 0)
 	{
 		n *= -1;
@@ -57,6 +60,8 @@ char		*ft_lltoa(long long n)
 	fresh = ft_strnew(int_len);
 	if (fresh == NULL)
 		return (NULL);
+	if (n == -9223372036854775807 - 1)
+		return (ft_strcpy(fresh, "9223372036854775808"));
 	fresh[int_len - 1] = n < 0 ? '-' : '0';
 	if (n < 0)
 		n = -n;

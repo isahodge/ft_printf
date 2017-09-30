@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/13 17:51:16 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/26 17:03:16 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/29 17:53:35 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_format	*create_format(void)
 	new->alternate = 0;
 	new->zero = 0;
 	new->mfw = 0;
-	new->precision = 0;
+	new->precision = -1;
 	new->strlength = 0;
 	return (new);
 }

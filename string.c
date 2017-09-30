@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/28 21:15:26 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/29 10:43:03 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 12:56:48 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ char	*string_conv(t_format *format, char *str)
 	char	*result;
 
 	if (str == NULL)
-		str = ft_strdup("(null)");
-	result = str;
-	if (format->precision)
+		result = ft_strdup("(null)");
+	else
+		result = ft_strdup(str);
+	if (format->precision >= 0)
 		result = str_precision(result, format->precision);
 	if (format->mfw)
 		result = mfw_char(result, format);
@@ -27,28 +28,64 @@ char	*string_conv(t_format *format, char *str)
 	return (result);
 }
 
+char	*char_conv(t_format *format, unsigned char c)
+{
+	int i;
+
+	i = 1;
+	if (format->mfw && format->minus)
+	{
+		ft_putchar(c);
+		while (format->mfw > 1)
+		{
+			ft_putchar(' ');
+			format->mfw--;
+			i++;
+		}
+	}
+	else if(format->mfw > 1)
+	{
+		while (format->mfw > 1)
+		{
+			ft_putchar(' ');
+			format->mfw--;
+			i++;
+		}
+		ft_putchar(c);
+	}
+	else
+		ft_putchar(c);
+	format->strlength = i;
+	return (NULL);
+}
+
 char	*str_precision(char *str, int precision)
 {
 	char	*result;
 	int		len;
 
-	result = str;
+	result = NULL;
 	len = ft_strlen(str);
 	if (len > precision)
 	{
 		result = ft_strsub(str, 0, precision);
+		free(str);
 	}
-	return (result);
+	return (result ? result : str);
 }
 
-void	str_fill_before(char *str, char **result, int fill)
+void	str_fill_before(char *str, char **result, int fill, t_format *format)
 {
-	int i;
+	int		i;
+	char	character;
 
+	character = ' ';
+	if (format->zero && format->precision == -1)
+		character = '0';
 	i = 0;
 	while (fill)
 	{
-		(*result)[i] = ' ';
+		(*result)[i] = character;;
 		i++;
 		fill--;
 	}
@@ -61,7 +98,7 @@ char	*mfw_char(char *str, t_format *format)
 	int		len;
 	int		fill;
 
-	result = str;
+	result = NULL;
 	len = ft_strlen(str);
 	fill = format->mfw - len;
 	if (fill > 0)
@@ -71,9 +108,9 @@ char	*mfw_char(char *str, t_format *format)
 		if (format->minus)
 			fill_after(str, &result, fill);
 		else
-			str_fill_before(str, &result, fill);
-		if (format->precision && len > format->precision)
-			free(str);
+			str_fill_before(str, &result, fill, format);
+		//if (format->precision >= 0 && len > format->precision)
+		free(str);
 	}
-	return (result);
+	return (result ? result : str);
 }

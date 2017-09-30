@@ -6,16 +6,14 @@
 #    By: ihodge <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/30 16:46:26 by ihodge            #+#    #+#              #
-#    Updated: 2017/09/28 22:02:27 by ihodge           ###   ########.fr        #
+#    Updated: 2017/09/30 16:25:21 by ihodge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 FLAGS = -Wall -Wextra -Werror -g
 OBJ = ${SRC:.c=.o}
-SRC  = ft_isdigit.c \
-		ft_itoa.c \
-		ft_printf.c \
+SRC  = ft_printf.c \
 		ft_putchar.c \
 		ft_putstr.c \
 		ft_strcpy.c \
@@ -26,7 +24,6 @@ SRC  = ft_isdigit.c \
 		ft_strsub.c \
 		ft_memalloc.c \
 		ft_bzero.c \
-		ft_strdel.c \
 		ft_lltoa.c \
 		ft_ultoa_base.c \
 		create_lists.c \

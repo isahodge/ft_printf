@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/28 11:12:43 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/29 10:58:57 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 14:02:03 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,16 @@ char	*negative_int(char *str, long long data)
 	char	*result;
 
 	len = ft_strlen(str);
-	result = str;
+	result = NULL;
 	if (data < 0)
 	{
 		if (!(result = (char*)ft_memalloc(len + 2)))
 			return (NULL);
 		result[0] = '-';
 		ft_strcpy(result + 1, str);
+		free(str);
 	}
-	return (result);
+	return (result ? result : str);
 }
 
 char	*alt_flag(char *str, t_format *format)
@@ -35,7 +36,7 @@ char	*alt_flag(char *str, t_format *format)
 	char	*result;
 
 	len = ft_strlen(str);
-	result = str;
+	result = NULL;
 	if (format->conv == 'x' || format->conv == 'X' || format->conv == 'p')
 	{
 		if (!(result = (char*)ft_memalloc(len + 3)))
@@ -46,15 +47,17 @@ char	*alt_flag(char *str, t_format *format)
 		else if (format->conv == 'X')
 			result[1] = 'X';
 		ft_strcpy(result + 2, str);
+		free(str);
 	}
-	else if (!format->precision)
+	else if (format->precision == -1 || format->precision == 0)
 	{
 		if (!(result = (char*)ft_memalloc(len + 2)))
 			return (NULL);
 		result[0] = '0';
 		ft_strcpy(result + 1, str);
+		free(str);
 	}
-	return (result);
+	return (result ? result : str);
 }
 
 char	*plus_flag(char *str, long long data)
@@ -63,15 +66,16 @@ char	*plus_flag(char *str, long long data)
 	char	*result;
 
 	len = ft_strlen(str);
-	result = str;
-	if (data > 0)
+	result = NULL;
+	if (data >= 0)
 	{
 		if (!(result = (char*)ft_memalloc(len + 2)))
 			return (NULL);
 		result[0] = '+';
 		ft_strcpy(result + 1, str);
+		free(str);
 	}
-	return (result);
+	return (result ? result : str);
 }
 
 char	*space_flag(char *str, long long data)
@@ -80,13 +84,14 @@ char	*space_flag(char *str, long long data)
 	char	*result;
 
 	len = ft_strlen(str);
-	result = str;
+	result = NULL;
 	if (data > 0)
 	{
 		if (!(result = (char*)ft_memalloc(len + 2)))
 			return (NULL);
 		result[0] = ' ';
 		ft_strcpy(result + 1, str);
+		free(str);
 	}
-	return (result);
+	return (result ? result : str);
 }
