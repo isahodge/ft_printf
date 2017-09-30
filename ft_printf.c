@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/04 12:06:54 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/29 12:53:05 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/29 17:07:55 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	write_arg(va_list ap, t_format *format, char conv)
 	if (conv == 'u' || conv == 'o' || conv == 'x' || conv == 'X' ||
 			conv == 'p')
 		ft_putstr(u_dispatcher(format, va_arg(ap, unsigned long)));
-	if (conv == 'c')
+	if (conv == 'c' || conv == 'C')
 		ft_putchar((unsigned char)va_arg(ap, int));
-	if (conv == 's')
+	if (conv == 's' || conv == 'S')
 		ft_putstr(string_conv(format, va_arg(ap, char *)));
 }
 
@@ -72,6 +72,11 @@ int		process_arg(va_list ap, char *str, int *length, t_format *format)
 	int len;
 
 	i = 1;
+	if (*(str + 1) == '%')
+	{
+		ft_putchar(str[i]);
+		return (i + 1);
+	}
 	format = create_format();
 	save_flag(format, (char*)str + 1);
 	while (is_flag(str[i]))
@@ -90,7 +95,7 @@ int		process_arg(va_list ap, char *str, int *length, t_format *format)
 		free(format);
 	}
 	else if (*str != '%')
-		return (0);
+		return (1);
 	return (i);
 }
 
@@ -109,7 +114,7 @@ int		ft_printf(const char *str, ...)
 		{
 			str += process_arg(ap, (char*)str, &length, format);
 		}
-		if (*str)
+		else if (*str)
 		{
 			ft_putchar(*str);
 			length++;

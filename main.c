@@ -13,9 +13,9 @@ int		main(void)
 	//if precision is 0 and input/data is 0, nothing gets printed
 	//find another way to represent precision 0. it is different than no precision
 	//start precision at -1? replace !precision with presicion < 0?
-	//refactor to fit Norm
+	//test with filechecker
 	
-	printf("pf_printf: hello %% % 030d\n", d);
+	/*printf("pf_printf: hello %% % 030d\n", d);
 	ft_printf("ft_printf: hello %% % 030d\n", d);
 	printf("pf_printf: hello %% %+010hhd\n", (char)d);
 	ft_printf("ft_printf: hello %% %+010hhd\n", (char)d);
@@ -167,10 +167,13 @@ int		main(void)
 	ft_printf("%u", INT_MAX + 1);
 	ft_printf("%%u 0000042 == |%u|\n", 0000042);
 	ft_printf("%%u \t == |%u|\n", '\t');
-	ft_printf("%%u Lydie == |%u|\n", 'L' +  'y' + 'd' + 'i' + 'e');
+	ft_printf("%%u Lydie == |%u|\n", 'L' +  'y' + 'd' + 'i' + 'e');*/
 
 	//chars only have mfw
-	//precision = 0 means nothing is printed but mfw still printed
+	//precision = 0 means nothing is printed but mfw still printed, empty str
+	//%% d not passing mix test
+	//test with filechecker
+
 	//printf("%.20c\n", (char)d);undefined behavior
 	//printf("% c\n", (char)d);undefined behavior
 	/*printf("pf_printf: %10c\n", 'a');//undefined behavior with zero flag
@@ -210,5 +213,7 @@ int		main(void)
 	printf("unintmax_t f= %ju sizeof f = %lu\n", f, sizeof(f));
 	ft_printf("unsigned long long g = %llu sizeof f = %lu\n", g, sizeof(g));
 	printf("unsigned long long g = %llu sizeof f = %lu\n", g, sizeof(g));
+	printf("pf_printf: %d%% des gens %c\n", 100, 'a');
+	ft_printf("ft_printf: %d%% ies gens %c\n", 100, 'a');
 	return (0);
 }
