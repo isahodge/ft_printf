@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/25 16:42:37 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/29 10:55:43 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 16:55:34 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*ft_ultoa_base(union u_data_union du, t_format *format,
 	if (!(str = (char*)ft_memalloc((i + 1))))
 		return (NULL);
 	str[i] = '\0';
-	while (i-- >= 0)
+	while (--i >= 0)
 	{
 		tmp = val % base;
 		str[i] = tmp >= 10 ? tmp - 10 + character : tmp + '0';
