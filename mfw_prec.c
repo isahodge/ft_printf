@@ -6,13 +6,13 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/28 11:13:24 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/30 11:27:03 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 18:15:59 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-char	*int_precision(char *str, int precision)
+char	*int_precision(char *str, int precision, int data)
 {
 	int		len;
 	int		fill;
@@ -21,7 +21,12 @@ char	*int_precision(char *str, int precision)
 	len = ft_strlen(str);
 	result = NULL;
 	fill = precision - len;
-	if (fill > 0)
+	if (data == 0 && precision == 0)
+	{
+		result = ft_strdup("");
+		free(str);
+	}
+	else if (fill > 0)
 	{
 		if (!(result = (char*)ft_memalloc(len + fill + 1)))
 			return (NULL);

@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/04 12:06:54 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/30 16:13:51 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 18:49:13 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	write_arg(va_list ap, t_format *format, char conv)
 	char *string;
 
 	string = NULL;
+	format->conv = conv;
 	if (conv == 'i' || conv == 'd' || conv == 'D')
 	{
 		string = dispatcher(format, va_arg(ap, long long));
@@ -84,7 +85,6 @@ void	write_arg(va_list ap, t_format *format, char conv)
 int		process_arg(va_list ap, char *str, int *length, t_format *format)
 {
 	int i;
-	int len;
 
 	i = 1;
 	format = create_format();
@@ -98,26 +98,16 @@ int		process_arg(va_list ap, char *str, int *length, t_format *format)
 		free(format);
 		return (i + 1);
 	}
-	while (is_flag(str[i]))
-		i++;
 	str += i;
-	len = is_length((char*)str, format);
-	str = str + len;
-	i += len;
+	i += is_length((char*)str, format);
+	str += is_length((char*)str, format);
 	if (is_conv(*str) == 1)
 	{
-		format->conv = *str;
 		write_arg(ap, format, *str);
 		(*length) += format->strlength;
-		str++;
 		i++;
-		free(format);
 	}
-	else if (*str != '%')
-	{
-		free(format);
-		return (1);
-	}
+	free(format);
 	return (i);
 }
 
@@ -133,9 +123,7 @@ int		ft_printf(const char *str, ...)
 	while (*str)
 	{
 		if (*str == '%')
-		{
 			str += process_arg(ap, (char*)str, &length, format);
-		}
 		else if (*str)
 		{
 			ft_putchar(*str);

@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/28 21:15:26 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/30 12:56:48 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 18:58:57 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,25 @@ char	*string_conv(t_format *format, char *str)
 	return (result);
 }
 
-char	*char_conv(t_format *format, unsigned char c)
+void	char_conv(t_format *format, unsigned char c)
 {
 	int i;
 
 	i = 1;
-	if (format->mfw && format->minus)
+	if (format->mfw)
 	{
-		ft_putchar(c);
+		format->minus ? ft_putchar(c) : 0;
 		while (format->mfw > 1)
 		{
 			ft_putchar(' ');
 			format->mfw--;
 			i++;
 		}
-	}
-	else if(format->mfw > 1)
-	{
-		while (format->mfw > 1)
-		{
-			ft_putchar(' ');
-			format->mfw--;
-			i++;
-		}
-		ft_putchar(c);
+		format->minus ? 0 : ft_putchar(c);
 	}
 	else
 		ft_putchar(c);
 	format->strlength = i;
-	return (NULL);
 }
 
 char	*str_precision(char *str, int precision)
@@ -85,7 +75,7 @@ void	str_fill_before(char *str, char **result, int fill, t_format *format)
 	i = 0;
 	while (fill)
 	{
-		(*result)[i] = character;;
+		(*result)[i] = character;
 		i++;
 		fill--;
 	}
@@ -109,7 +99,6 @@ char	*mfw_char(char *str, t_format *format)
 			fill_after(str, &result, fill);
 		else
 			str_fill_before(str, &result, fill, format);
-		//if (format->precision >= 0 && len > format->precision)
 		free(str);
 	}
 	return (result ? result : str);

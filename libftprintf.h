@@ -6,7 +6,7 @@
 /*   By: ihodge <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 17:39:51 by ihodge            #+#    #+#             */
-/*   Updated: 2017/09/30 16:24:12 by ihodge           ###   ########.fr       */
+/*   Updated: 2017/09/30 20:08:18 by ihodge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ union				u_data_union
 	uintmax_t		uintmaxt;
 };
 
-//int					ft_isdigit(int c);
+typedef char		*(*t_ufptr)(union u_data_union du, t_format *format,
+		unsigned int base);
 int					ft_printf(const char *str, ...);
 void				ft_putchar(char c);
-char				*ft_itoa(int n);
 void				ft_putstr(const char *str);
 size_t				ft_strlen(const char *str);
 char				*ft_strnew(size_t size);
@@ -54,7 +54,6 @@ char				*ft_strjoin(const char *s1, const char *s2);
 char				*ft_strsub(const char *s, unsigned int start, size_t len);
 void				*ft_memalloc(size_t size);
 void				ft_bzero(void *s, size_t n);
-void				ft_strdel(char **as);
 t_format			*create_format(void);
 char				*dispatcher(t_format *format, long long data);
 char				*u_dispatcher(t_format *format, unsigned long data);
@@ -64,7 +63,7 @@ char				*min_field_wid(char *str, t_format *format);
 void				fill_after(char *str, char **result, int fill);
 void				fill_before(char *str, char **result, int fill,
 		char character);
-char				*int_precision(char *str, int precision);
+char				*int_precision(char *str, int precision, int data);
 char				*negative_int(char *str, long long data);
 char				*ft_lltoa(long long n);
 char				*ft_ultoa_base(union u_data_union du, t_format *format,
@@ -79,5 +78,6 @@ char				*string_conv(t_format *format, char *str);
 char				*str_precision(char *str, int precision);
 char				*mfw_char(char *str, t_format *format);
 void				write_arg(va_list ap, t_format *format, char conv);
-char				*char_conv(t_format *format, unsigned char c);
+void				char_conv(t_format *format, unsigned char c);
+void				change_conv(t_format *format);
 #endif

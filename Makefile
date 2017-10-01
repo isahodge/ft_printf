@@ -6,7 +6,7 @@
 #    By: ihodge <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/30 16:46:26 by ihodge            #+#    #+#              #
-#    Updated: 2017/09/30 16:25:21 by ihodge           ###   ########.fr        #
+#    Updated: 2017/09/30 20:16:40 by ihodge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,12 +32,10 @@ SRC  = ft_printf.c \
 		mfw_prec.c \
 		is_flag_conv_len.c \
 		string.c \
-		main.c
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	gcc $(FLAGS) $(OBJ)
 	ar rc $(NAME) $(OBJ)
 
 %.o: %.c
