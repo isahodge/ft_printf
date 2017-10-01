@@ -6,7 +6,7 @@
 #    By: ihodge <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/30 16:46:26 by ihodge            #+#    #+#              #
-#    Updated: 2017/09/30 20:16:40 by ihodge           ###   ########.fr        #
+#    Updated: 2017/09/30 20:21:15 by ihodge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,9 +42,9 @@ $(NAME): $(OBJ)
 	gcc $(FLAGS) -c $^ -o $@
 
 clean:
-	saferm -f $(OBJ)
+	rm -f $(OBJ)
 
 fclean:
-	saferm -f $(OBJ) $(NAME)
+	rm -f $(OBJ) $(NAME)
 
 re: fclean all
